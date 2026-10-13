@@ -52,3 +52,24 @@ JOIN edificio e ON a.id = e.admin
 GROUP BY a.id
 ORDER BY total_edificios DESC
 LIMIT 1;
+
+-- consulta 7 departamento con mas habitantes por piso, por edificio
+SELECT e.nombre AS edificio, d.piso, d.numero AS depto, d.habitantes
+FROM depto d
+JOIN edificio e ON e.id = d.edificio
+WHERE d.habitantes = (
+    SELECT MAX(d2.habitantes)
+    FROM depto d2
+    WHERE d2.edificio = d.edificio
+      AND d2.piso = d.piso
+)
+ORDER BY e.nombre, d.piso;
+
+-- consulta 8 cantidad de deptos por tipo en cada edificio
+SELECT e.nombre AS edificio, td.nombre AS tipo_depto, COUNT(d.id) as cantidad_tipo
+FROM depto d
+JOIN edificio e ON e.id = d.edificio
+JOIN tipo_depto td ON td.id = d.tipo
+GROUP BY e.nombre, td.nombre
+ORDER BY e.nombre;
+
