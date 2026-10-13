@@ -36,3 +36,19 @@ JOIN tipo_gg tgg on td.id = tgg.tipo_depto
 JOIN gasto_comun gc on gc.tipo_gg = tgg.id
 ORDER BY gc.monto_base DESC
 LIMIT 1;
+
+-- consulta 5 lista de edificios por comuna con la cantidad de deptos
+SELECT e.nombre AS edificio, e.comuna AS comuna, COUNT(d.id) AS total_deptos
+FROM comuna c
+JOIN edificio e ON c.id = e.comuna
+LEFT JOIN depto d ON e.id = d.edificio
+GROUP BY c.id, e.id
+ORDER BY c.nombre, e.nombre;
+
+-- consulta 6 administrador con mas edificios a cargo
+SELECT a.nombre AS administrador, a.rut, COUNT(e.id) AS total_edificios
+FROM administrador a
+JOIN edificio e ON a.id = e.admin
+GROUP BY a.id
+ORDER BY total_edificios DESC
+LIMIT 1;
