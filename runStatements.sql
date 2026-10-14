@@ -3,16 +3,21 @@ SET search_path TO edificios;
 -- consulta 1
 SELECT e.nombre AS edificio, d.numero AS depto, d.piso,
        gc.anio, gc.mes, tg.descripcion AS tipo_gasto,
-       gc.monto_base AS monto_adeudado FROM depto d
-JOIN edificio e ON e.id = d.id_edificio
-JOIN gasto_comun gc ON gc.id_edificio = d.id_edificio
-JOIN tipo_gg tg ON tg.id = gc.id_tipo_gg AND tg.id_tipo_depto = d.id_tipo
+       gc.monto_base AS monto_cobrado,
+       COALESCE(p.monto_pagado, 0) AS monto_pagado,
+       gc.monto_base - COALESCE(p.monto_pagado, 0) AS monto_adeudado
+FROM depto d
+JOIN edificio e     ON e.id = d.edificio
+JOIN gasto_comun gc ON gc.edificio = d.edificio
+JOIN tipo_gg tg     ON tg.id = gc.tipo_gg
+                   AND tg.tipo_depto = d.tipo
 LEFT JOIN pago_gg_depto p
-	ON p.id_depto = d.id
-    AND p.id_gasto_comun = gc.id
-WHERE p.id IS NULL
+                    ON p.depto = d.id
+                   AND p.gasto_comun = gc.id
+WHERE (p.id IS NULL OR p.monto_pagado < gc.monto_base)
   AND make_date(gc.anio, gc.mes, 1) <= current_date
-  AND AGE(date_trunc('month', current_date), make_date(gc.anio, gc.mes, 1)) <= INTERVAL '2 months'
+  AND AGE(date_trunc('month', current_date), make_date(gc.anio, gc.mes, 1))
+      <= INTERVAL '2 months'
 ORDER BY e.nombre, d.numero, gc.anio, gc.mes;
 
 -- consulta 2
