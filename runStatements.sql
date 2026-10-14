@@ -47,7 +47,7 @@ ORDER BY gasto_maximo DESC
 FETCH FIRST 1 ROWS WITH TIES;
 
 -- consulta 5 lista de edificios por comuna con la cantidad de deptos
-SELECT e.nombre AS edificio, e.id_comuna AS comuna, COUNT(d.id) AS total_deptos
+SELECT e.nombre AS edificio, c.nombre AS comuna, COUNT(d.id) AS total_deptos
 FROM comuna c
 JOIN edificio e ON c.id = e.id_comuna
 LEFT JOIN depto d ON e.id = d.id_edificio
