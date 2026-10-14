@@ -31,11 +31,13 @@ GROUP BY e.id, e.nombre, pg.anio, pg.mes
 ORDER BY e.nombre, pg.anio, pg.mes;
 
 -- consulta 4 tipo detpo con gastos comunes mas caro
-SELECT td.nombre, gc.monto_base FROM tipo_depto td
-JOIN tipo_gg tgg on td.id = tgg.tipo_depto
-JOIN gasto_comun gc on gc.tipo_gg = tgg.id
-ORDER BY gc.monto_base DESC
-LIMIT 1;
+SELECT td.id, td.nombre, AVG(gc.monto_base) AS promedio_gasto
+FROM tipo_depto td
+JOIN tipo_gg tgg ON td.id = tgg.tipo_depto
+JOIN gasto_comun gc ON gc.tipo_gg = tgg.id
+GROUP BY td.id, td.nombre
+ORDER BY promedio_gasto DESC
+FETCH FIRST 1 ROWS WITH TIES;
 
 -- consulta 5 lista de edificios por comuna con la cantidad de deptos
 SELECT e.nombre AS edificio, e.comuna AS comuna, COUNT(d.id) AS total_deptos
