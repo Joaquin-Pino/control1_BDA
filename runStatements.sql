@@ -38,7 +38,7 @@ GROUP BY e.id, e.nombre, pg.anio, pg.mes
 ORDER BY e.nombre, pg.anio, pg.mes;
 
 -- consulta 4 tipo detpo con gastos comunes mas caro
-SELECT td.id, td.nombre, AVG(gc.monto_base) AS promedio_gasto
+SELECT td.id, td.nombre, MAX(gc.monto_base) AS promedio_gasto
 FROM tipo_depto td
 JOIN tipo_gg tgg ON td.id = tgg.id_tipo_depto
 JOIN gasto_comun gc ON gc.id_tipo_gg = tgg.id
