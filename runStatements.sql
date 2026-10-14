@@ -73,3 +73,36 @@ JOIN tipo_depto td ON td.id = d.tipo
 GROUP BY e.nombre, td.nombre
 ORDER BY e.nombre;
 
+-- consulta 9 lista de edificios que menos gasta por mes.
+WITH GastosPorEdificio AS (
+    SELECT e.id, e.nombre AS edificio, pg.anio, pg.mes, SUM(pg.monto) AS total_gastos
+    FROM pago_gasto_edificio pg
+    JOIN edificio e ON e.id = pg.edificio
+    GROUP BY e.id, e.nombre, pg.anio, pg.mes
+),
+RankingGastos AS (
+    SELECT edificio, anio, mes, total_gastos,
+           RANK() OVER(PARTITION BY anio, mes ORDER BY total_gastos ASC) as rnk
+    FROM GastosPorEdificio
+)
+SELECT edificio, anio, mes, total_gastos
+FROM RankingGastos
+WHERE rnk = 1
+ORDER BY anio, mes, edificio;
+
+-- consulta 10 lista de tipos de departamentos más pequeños por edificio.
+WITH TiposPorEdificio AS (
+    SELECT DISTINCT e.id, e.nombre AS edificio, td.nombre AS tipo_depto, td.metros_cuadrados
+    FROM depto d
+    JOIN edificio e ON e.id = d.edificio
+    JOIN tipo_depto td ON td.id = d.tipo
+),
+RankingTamanio AS (
+    SELECT edificio, tipo_depto, metros_cuadrados,
+           RANK() OVER(PARTITION BY id ORDER BY metros_cuadrados ASC) as rnk
+    FROM TiposPorEdificio
+)
+SELECT edificio, tipo_depto, metros_cuadrados
+FROM RankingTamanio
+WHERE rnk = 1
+ORDER BY edificio;
