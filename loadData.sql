@@ -11,7 +11,7 @@ INSERT INTO administrador (nombre, rut) VALUES
   ('María Fernanda Rojas Vidal', '15.432.876-9'),
   ('Carlos Andrés Muñoz Fuentes', '18.765.432-7');
 
-INSERT INTO edificio (comuna, admin, nombre) VALUES
+INSERT INTO edificio (id_comuna, id_admin, nombre) VALUES
   (1, 1, 'Edificio Los Aromos'),
   (2, 2, 'Torre Plaza Ñuñoa'),
   (3, 2, 'Edificio Alameda Norte'),
@@ -26,7 +26,7 @@ INSERT INTO tipo_depto (nombre, metros_cuadrados) VALUES
   ('Tres dormitorios', 92),
   ('Penthouse', 130);
 
-INSERT INTO depto (edificio, tipo, numero, piso, habitantes) VALUES
+INSERT INTO depto (id_edificio, id_tipo, numero, piso, habitantes) VALUES
   (1, 2, '101', 1, 2), (1, 3, '102', 1, 4),
   (1, 2, '201', 2, 1), (1, 3, '202', 2, 3),
   (2, 1, '101', 1, 1), (2, 1, '102', 1, 2),
@@ -40,14 +40,14 @@ INSERT INTO depto (edificio, tipo, numero, piso, habitantes) VALUES
   (6, 2, '1A', 1, 2), (6, 4, '1B', 1, 4),
   (6, 2, '2A', 2, 0), (6, 4, '2B', 2, 5);
 
-INSERT INTO tipo_gg (tipo_depto, descripcion) VALUES
+INSERT INTO tipo_gg (id_tipo_depto, descripcion) VALUES
   (1, 'Gasto común ordinario'), (1, 'Fondo de reserva'),
   (2, 'Gasto común ordinario'), (2, 'Fondo de reserva'),
   (3, 'Gasto común ordinario'), (3, 'Fondo de reserva'),
   (4, 'Gasto común ordinario'), (4, 'Fondo de reserva'),
   (5, 'Gasto común ordinario'), (5, 'Fondo de reserva');
 
-INSERT INTO gasto_comun (mes, anio, fec_emision, monto_base, edificio, tipo_gg) VALUES
+INSERT INTO gasto_comun (mes, anio, fec_emision, monto_base, id_edificio, id_tipo_gg) VALUES
   (8, 2026, '2026-08-05', 74900, 1, 3), (8, 2026, '2026-08-05', 7500, 1, 4),
   (8, 2026, '2026-08-05', 106100, 1, 5), (8, 2026, '2026-08-05', 10600, 1, 6),
   (8, 2026, '2026-08-05', 56700, 2, 1), (8, 2026, '2026-08-05', 5700, 2, 2),
@@ -73,7 +73,7 @@ INSERT INTO gasto_comun (mes, anio, fec_emision, monto_base, edificio, tipo_gg) 
   (9, 2026, '2026-09-05', 90200, 6, 3), (9, 2026, '2026-09-05', 9000, 6, 4),
   (9, 2026, '2026-09-05', 172800, 6, 7), (9, 2026, '2026-09-05', 17300, 6, 8);
 
-INSERT INTO pago_gg_depto (depto, gasto_comun, fecha_pago, monto_pagado) VALUES
+INSERT INTO pago_gg_depto (id_depto, id_gasto_comun, fecha_pago, monto_pagado) VALUES
   (1, 1, '2026-08-16', 74900), (3, 1, '2026-08-18', 37400),
   (1, 2, '2026-08-13', 7500), (3, 2, '2026-08-15', 7500),
   (2, 3, '2026-08-21', 106100), (4, 3, '2026-08-23', 106100),
@@ -123,7 +123,7 @@ INSERT INTO gasto_edificio (descripcion) VALUES
   ('Servicio de jardinería'), ('Seguridad y circuito cerrado'),
   ('Honorarios de administración'), ('Seguro contra incendio y sismo');
 
-INSERT INTO pago_gasto_edificio (edificio, gasto, monto, mes, anio) VALUES
+INSERT INTO pago_gasto_edificio (id_edificio, id_gasto, monto, mes, anio) VALUES
   (1, 1, 361000, 8, 2026), (1, 2, 779000, 8, 2026), (1, 3, 437000, 8, 2026),
   (1, 4, 294500, 8, 2026), (1, 5, 228000, 8, 2026), (2, 1, 380000, 8, 2026),
   (2, 2, 820000, 8, 2026), (2, 3, 460000, 8, 2026), (2, 4, 310000, 8, 2026),

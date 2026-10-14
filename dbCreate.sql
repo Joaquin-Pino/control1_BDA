@@ -15,8 +15,8 @@ CREATE TABLE administrador (
 
 CREATE TABLE edificio (
   id integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-  comuna smallint NOT NULL REFERENCES comuna (id),
-  admin integer NOT NULL REFERENCES administrador (id),
+  id_comuna smallint NOT NULL REFERENCES comuna (id),
+  id_admin integer NOT NULL REFERENCES administrador (id),
   nombre varchar(100) NOT NULL
 );
 
@@ -28,8 +28,8 @@ CREATE TABLE tipo_depto (
 
 CREATE TABLE depto (
   id integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-  edificio integer NOT NULL REFERENCES edificio (id),
-  tipo smallint NOT NULL REFERENCES tipo_depto (id),
+  id_edificio integer NOT NULL REFERENCES edificio (id),
+  id_tipo smallint NOT NULL REFERENCES tipo_depto (id),
   numero varchar(10) NOT NULL,
   piso smallint NOT NULL,
   habitantes smallint NOT NULL,
@@ -38,7 +38,7 @@ CREATE TABLE depto (
 
 CREATE TABLE tipo_gg (
   id smallint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-  tipo_depto smallint NOT NULL REFERENCES tipo_depto (id),
+  id_tipo_depto smallint NOT NULL REFERENCES tipo_depto (id),
   descripcion varchar(100) NOT NULL
 );
 
@@ -48,18 +48,18 @@ CREATE TABLE gasto_comun (
   anio smallint NOT NULL,
   fec_emision date NOT NULL,
   monto_base bigint NOT NULL,
-  edificio integer NOT NULL REFERENCES edificio (id),
-  tipo_gg smallint NOT NULL REFERENCES tipo_gg (id),
-  UNIQUE (edificio, tipo_gg, mes, anio)
+  id_edificio integer NOT NULL REFERENCES edificio (id),
+  id_tipo_gg smallint NOT NULL REFERENCES tipo_gg (id),
+  UNIQUE (id_edificio, id_tipo_gg, mes, anio)
 );
 
 CREATE TABLE pago_gg_depto (
   id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-  depto integer NOT NULL REFERENCES depto (id),
-  gasto_comun integer NOT NULL REFERENCES gasto_comun (id),
+  id_depto integer NOT NULL REFERENCES depto (id),
+  id_gasto_comun integer NOT NULL REFERENCES gasto_comun (id),
   fecha_pago date NOT NULL,
   monto_pagado bigint NOT NULL,
-  UNIQUE (depto, gasto_comun),
+  UNIQUE (id_depto, id_gasto_comun),
   CHECK (monto_pagado > 0)
 );
 
@@ -70,8 +70,8 @@ CREATE TABLE gasto_edificio (
 
 CREATE TABLE pago_gasto_edificio (
   id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-  edificio integer NOT NULL REFERENCES edificio (id),
-  gasto integer NOT NULL REFERENCES gasto_edificio (id),
+  id_edificio integer NOT NULL REFERENCES edificio (id),
+  id_gasto integer NOT NULL REFERENCES gasto_edificio (id),
   monto bigint NOT NULL,
   mes smallint NOT NULL,
   anio smallint NOT NULL,
