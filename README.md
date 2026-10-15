@@ -39,9 +39,18 @@ Cada script comienza con `SET search_path TO edificios;`, por lo que no es neces
 
 1. Agregar la carpeta `bin` de PostgreSQL al `PATH` (por ejemplo `C:\Program Files\PostgreSQL\17\bin`), o abrir la terminal "SQL Shell (psql)" que ya la incluye.
 2. En Windows normalmente hay que indicar el usuario (`-U postgres`) y escribir la contraseña cuando se solicite.
-3. Si las tildes o la `Ñ` se ven mal, forzar la codificación antes de ejecutar:
-   - CMD: `set PGCLIENTENCODING=UTF8`
-   - PowerShell: `$env:PGCLIENTENCODING="UTF8"`
+3. Antes de ejecutar los scripts, configurar la terminal en UTF-8 para que las tildes y la `Ñ` se carguen y se muestren correctamente. Se necesitan **los dos** comandos: `chcp 65001` cambia la terminal a UTF-8 y `PGCLIENTENCODING` le indica a psql que use UTF-8.
+   - CMD:
+```
+     chcp 65001
+     set PGCLIENTENCODING=UTF8
+```
+   - PowerShell:
+```powershell
+     chcp 65001
+     $env:PGCLIENTENCODING="UTF8"
+```
+   Estos comandos solo aplican a la ventana actual; si se abre una terminal nueva, hay que repetirlos.
 
 #### CMD o PowerShell 7 o superior
 
@@ -99,24 +108,29 @@ Los comandos se ejecutan uno a uno, en este orden. Si alguno muestra un error, n
    ```
 
 ### Windows (CMD o PowerShell)
+1. Configurar la terminal en UTF-8 (CMD):
+   ```
+   chcp 65001
+   set PGCLIENTENCODING=UTF8
+   ```
 
-1. Crear la base de datos:
+2. Crear la base de datos:
    ```
    createdb -U postgres edificios_db
    ```
-2. Crear el esquema y las tablas:
+3. Crear el esquema y las tablas:
    ```
    psql -U postgres -v ON_ERROR_STOP=1 -d edificios_db -f dbCreate.sql
    ```
-3. Cargar los datos:
+4. Cargar los datos:
    ```
    psql -U postgres -v ON_ERROR_STOP=1 -d edificios_db -f loadData.sql
    ```
-4. Ejecutar las consultas:
+5. Ejecutar las consultas:
    ```
    psql -U postgres -d edificios_db -f runStatements.sql
    ```
-5. Borrar la base de datos (para empezar de cero):
+6. Borrar la base de datos (para empezar de cero):
    ```
    dropdb -U postgres edificios_db
    ```
